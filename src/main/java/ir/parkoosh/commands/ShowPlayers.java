@@ -1,16 +1,16 @@
-package commands;
+package ir.parkoosh.commands;
 
 /**
  * Created by sinakashipazha on 2017/6/26 AD.
  */
-public class ShowTeamInfo implements Command {
+public class ShowPlayers implements Command {
     @Override
     public String getDescription() {
-        return "Show team info";
+        return "Show Players name";
     }
 
     @Override
-    public Result _do() {
+    public Result __do() throws Exception {
         return null;
     }
 }
