@@ -1,9 +1,6 @@
 package ir.parkoosh;
 
-import ir.parkoosh.commands.AddTeam;
-import ir.parkoosh.commands.Command;
-import ir.parkoosh.commands.ShowPlayers;
-import ir.parkoosh.commands.ShowTeamInfo;
+import ir.parkoosh.commands.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -24,6 +21,7 @@ public class Main {
         temp.add(new ShowPlayers());
         temp.add(new ShowTeamInfo());
         temp.add(new AddTeam());
+        temp.add(new TrainPlayer());
 
         commands = temp.toArray(new Command[temp.size()]);
     }
