@@ -1,5 +1,6 @@
 package ir.parkoosh;
 
+import ir.parkoosh.commands.AddTeam;
 import ir.parkoosh.commands.Command;
 import ir.parkoosh.commands.ShowPlayers;
 import ir.parkoosh.commands.ShowTeamInfo;
@@ -22,6 +23,7 @@ public class Main {
         ArrayList<Command> temp = new ArrayList<>();
         temp.add(new ShowPlayers());
         temp.add(new ShowTeamInfo());
+        temp.add(new AddTeam());
 
         commands = temp.toArray(new Command[temp.size()]);
     }
