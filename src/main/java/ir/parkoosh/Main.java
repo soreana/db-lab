@@ -22,6 +22,7 @@ public class Main {
         temp.add(new ShowTeamInfo());
         temp.add(new AddTeam());
         temp.add(new TrainPlayer());
+        temp.add(new Match());
 
         commands = temp.toArray(new Command[temp.size()]);
     }

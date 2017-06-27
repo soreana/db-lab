@@ -9,6 +9,27 @@ DROP TABLE IF EXISTS stadium;
 DROP TABLE IF EXISTS dealer;
 DROP TABLE IF EXISTS trainer;
 DROP TABLE IF EXISTS employee;
+DROP FUNCTION IF EXISTS play_game(integer,integer);
+DROP FUNCTION IF EXISTS add_team(VARCHAR, CHAR);
+DROP FUNCTION IF EXISTS buy_person(VARCHAR, INTEGER, VARCHAR, INTEGER);
+DROP FUNCTION IF EXISTS calculate_team_satisfaction(VARCHAR);
+DROP FUNCTION IF EXISTS calculate_team_score(VARCHAR);
+DROP FUNCTION IF EXISTS impact_player(VARCHAR, VARCHAR);
+DROP FUNCTION IF EXISTS impact_team(VARCHAR, VARCHAR);
+DROP FUNCTION IF EXISTS merge_stadium(INTEGER);
+DROP FUNCTION IF EXISTS merge_stadium(VARCHAR);
+DROP FUNCTION IF EXISTS merge_stadium();
+DROP FUNCTION IF EXISTS play_game(INTEGER, INTEGER);
+DROP FUNCTION IF EXISTS play_matches(INTEGER, INTEGER);
+DROP FUNCTION IF EXISTS play_matchs(INTEGER, INTEGER);
+DROP FUNCTION IF EXISTS player_get_tired(INTEGER);
+DROP FUNCTION IF EXISTS player_tired(INTEGER);
+DROP FUNCTION IF EXISTS set_league_games(INTEGER);
+DROP FUNCTION IF EXISTS update_body(DOUBLE PRECISION, INTEGER);
+DROP FUNCTION IF EXISTS update_fitness(DOUBLE PRECISION, INTEGER);
+DROP FUNCTION IF EXISTS update_goalkeeper(DOUBLE PRECISION, INTEGER);
+DROP FUNCTION IF EXISTS update_stadium_quality(INTEGER);
+DROP FUNCTION IF EXISTS update_tactic(DOUBLE PRECISION, INTEGER);
 
 /* tables */
 CREATE TABLE fitness
@@ -495,112 +516,17 @@ INSERT INTO play
   ('5', '5', '2'),
   ('6', '6', '2'),
   ('7', '7', '2'),
-  ('8', '8', '2'),
-  ('9', '9', '3'),
-  ('10', '10', '3'),
-  ('11', '11', '3'),
-  ('12', '12', '3'),
-  ('13', '13', '4'),
-  ('14', '14', '4'),
-  ('15', '15', '4'),
-  ('16', '16', '4'),
-  ('17', '17', '5'),
-  ('18', '18', '5'),
-  ('19', '19', '5'),
-  ('20', '20', '5'),
-  ('21', '21', '6'),
-  ('22', '22', '6'),
-  ('23', '23', '6'),
-  ('24', '24', '6'),
-  ('25', '25', '7'),
-  ('26', '26', '7'),
-  ('27', '27', '7'),
-  ('28', '28', '7'),
-  ('29', '29', '8'),
-  ('30', '30', '8'),
-  ('31', '31', '8'),
-  ('32', '32', '8'),
-  ('33', '33', '9'),
-  ('34', '34', '9'),
-  ('35', '35', '9'),
-  ('36', '36', '9'),
-  ('37', '37', '10'),
-  ('38', '38', '10'),
-  ('39', '39', '10'),
-  ('40', '40', '10'),
-  ('41', '41', '11'),
-  ('42', '42', '11'),
-  ('43', '43', '11'),
-  ('44', '44', '11'),
-  ('45', '45', '12'),
-  ('46', '46', '12'),
-  ('47', '47', '12'),
-  ('48', '48', '12'),
-  ('49', '49', '13'),
-  ('50', '50', '13'),
-  ('51', '51', '13'),
-  ('52', '52', '13'),
-  ('53', '53', '14'),
-  ('54', '54', '14'),
-  ('55', '55', '14'),
-  ('56', '56', '14'),
-  ('57', '57', '15'),
-  ('58', '58', '15'),
-  ('59', '59', '15'),
-  ('60', '60', '15'),
-  ('61', '61', '16'),
-  ('62', '62', '16'),
-  ('63', '63', '16'),
-  ('64', '64', '16'),
-  ('65', '65', '17'),
-  ('66', '66', '17'),
-  ('67', '67', '17'),
-  ('68', '68', '17'),
-  ('69', '69', '18'),
-  ('70', '70', '18'),
-  ('71', '71', '18'),
-  ('72', '72', '18'),
-  ('73', '73', '19'),
-  ('74', '74', '19'),
-  ('75', '75', '19'),
-  ('76', '76', '19'),
-  ('77', '77', '20'),
-  ('78', '78', '20'),
-  ('79', '79', '20'),
-  ('80', '80', '20');
+  ('8', '8', '2');
 
 INSERT INTO employee (type, name, percent) VALUES
-  ('dealer','sina',10),
-  ('dealer','sina2',10),
-  ('tactic_trainer','sina',10),
-  ('tactic_trainer','sina2',10),
-  ('body_trainer','sina',10),
-  ('body_trainer','sina2',10),
-  ('goalkeeper_trainer','sina',10),
-  ('goalkeeper_trainer','sina2',10),
-  ('dealer','asghar',10),
-  ('dealer','asghar2',10),
-  ('tactic_trainer','asghar3',10),
-  ('tactic_trainer','akbar',10),
-  ('body_trainer','akbar2',10),
-  ('body_trainer','akbar3',10),
-  ('goalkeeper_trainer','saeed',10),
-  ('goalkeeper_trainer','saeed2',10),
-  ('tactic_trainer','saeed3',10),
-  ('tactic_trainer','saman',10),
-  ('body_trainer','saman1',10),
-  ('body_trainer','saman2',10),
-  ('goalkeeper_trainer','saman3',10),
-  ('goalkeeper_trainer','soroosh',10),
-  ('dealer','soroosh2',10),
-  ('dealer','soroosh3',10),
-  ('tactic_trainer','arash',10),
-  ('tactic_trainer','arash1',10),
-  ('body_trainer','arash2',10),
-  ('body_trainer','arash3',10),
-  ('goalkeeper_trainer','kamran',10),
-  ('goalkeeper_trainer','kamran2',10),
-  ('body_trainer','kamran3',10);
+  ('dealer', 'sina', 10),
+  ('dealer', 'sina2', 10),
+  ('tactic_trainer', 'sina', 10),
+  ('tactic_trainer', 'sina2', 10),
+  ('body_trainer', 'sina', 10),
+  ('body_trainer', 'sina2', 10),
+  ('goalkeeper_trainer', 'sina', 10),
+  ('goalkeeper_trainer', 'sina2', 10);
 
 INSERT INTO contract (price, employee__fk, team_fk) VALUES
   (10000, '1', '1'),
@@ -720,7 +646,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION play_game(host_team_pk INTEGER, guest_team_pk INTEGER)
-  RETURNS VOID AS $$
+  RETURNS integer AS $$
 DECLARE   host_team_power  DOUBLE PRECISION;
   DECLARE guest_team_power DOUBLE PRECISION;
   DECLARE stadium_pk_temp  VARCHAR(40);
@@ -752,9 +678,8 @@ BEGIN
     PERFORM player_tired(__player.player_pk);
   END LOOP;
 
-  RAISE NOTICE 'Value: h: %, g: %', host_team_power, guest_team_power;
-  IF host_team_power < guest_team_power
-  THEN
+  IF host_team_power < guest_team_power THEN
+    RETURN -1; -- host lost
     UPDATE stadium
     SET
       seat = seat - seat * 0.2 -- todo ضرب در رضایت تماشاچی
@@ -762,11 +687,13 @@ BEGIN
     WHERE stadium.stadium_pk = team.stadium_fk;
   END IF;
 
+  IF host_team_power = guest_team_power THEN
+    RETURN 0;
+  END IF;
+
+  IF host_team_power > guest_team_power THEN
+    RETURN 1;
+  END IF;
+
 END;
 $$ LANGUAGE plpgsql;
-
--- SELECT player_tired(1);
--- SELECT player_tired(2);
--- SELECT player_tired(3);
--- SELECT player_tired(4);
--- SELECT play_game(1, 2);
